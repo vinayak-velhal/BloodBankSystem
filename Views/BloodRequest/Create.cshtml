@@ -1,0 +1,107 @@
+﻿@model BloodBankManagementSystem.Models.BloodRequest
+@{
+    ViewData["Title"] = "Add New Request";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center py-3 rounded-top-4">
+                    <h4 class="mb-0">
+                        <img src="~/icons/BloodRequest.png" alt="BloodRequest Icon" width="40" height="40" class="mb-1 me-1"/>Add New Request
+                    </h4>
+                </div>
+
+                <div class="card-body px-5 py-4">
+                    <form asp-action="Create" method="post" class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label for="PatientId" class="form-label fw-semibold">Patient Name</label>
+                            @if (Model?.PatientId > 0)
+                            {
+                                <input type="hidden" asp-for="PatientId" />
+                                <input type="text" class="form-control shadow-sm" value="@Model.PatientName" readonly />
+                            }
+                            else
+                            {
+                                <select asp-for="PatientId" class="form-select shadow-sm" id="PatientId" required>
+                                    <option value="">-- Select Patient Name --</option>
+                                    @foreach (var p in (IEnumerable<dynamic>)ViewBag.PatientList)
+                                    {
+                                        <option value="@p.PatientId">@p.Display</option>
+                                    }
+                                </select>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="BloodGroup" class="form-label fw-semibold">Blood Group</label>
+                            <input id="BloodGroup" asp-for="BloodGroup" class="form-control shadow-sm" value="@Model?.BloodGroup" readonly />
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Quantity" class="form-label fw-semibold">Quantity (in ml)</label>
+                            <input asp-for="Quantity" class="form-control shadow-sm" placeholder="Enter quantity (in ml)" />
+                            <span asp-validation-for="Quantity" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="HospitalName" class="form-label fw-semibold">Hospital Name</label>
+                            <input id="HospitalName" asp-for="HospitalName" class="form-control shadow-sm" value="@Model?.HospitalName" readonly />                            <input type="hidden" asp-for="PatientId" />
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="Remarks" class="form-label fw-semibold">Initial Remark</label>
+                            <textarea asp-for="Remarks" class="form-control shadow-sm" rows="3" placeholder="Default: Request for blood" readonly></textarea>
+                            <small class="text-muted">This remark will be auto-prefixed with timestamp once saved.</small>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-arrow-left-circle me-1"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-success px-4 shadow-sm">
+                                <i class="bi bi-save2-fill me-1"></i> Save Request
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+            $('#PatientId').change(function () {
+                var id = $(this).val();
+                if (id) {
+                    $.ajax({
+                        url: '/Patient/GetPatientInfo',
+                        type: 'GET',
+                        data: { id: id },
+                        success: function (res) {
+                            if (res.success) {
+                                $('#PatientName').val(res.data.patientName);
+                                $('#BloodGroup').val(res.data.bloodGroup);
+                                $('#HospitalName').val(res.data.hospitalName);
+                            } else {
+                                alert('No data found for this patient.');
+                            }
+                        },
+                        error: function () {
+                            alert('Error fetching data.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

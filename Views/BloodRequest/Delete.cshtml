@@ -1,0 +1,55 @@
+﻿@model BloodBankManagementSystem.Models.BloodRequest
+@{
+    ViewData["Title"] = "Delete Blood Request";
+}
+
+<div class="container mt-5">
+    <div class="delete-card card shadow border-0 rounded-4">
+        
+        <!-- Header -->
+        <div class="delete-card-header d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 text-white">Delete Blood Request</h4>
+            <a asp-action="Index" class="btn btn-secondary btn-sm">← Back to List</a>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body p-4">
+
+            <div class="delete-warning-box">
+                ⚠️ Are you sure you want to permanently delete this blood request?
+            </div>
+
+            <!-- Preview Section -->
+            <div class="delete-preview-box mb-3">
+                <dl class="row">
+                    <dt class="col-sm-4">Request ID</dt>
+                    <dd class="col-sm-8">@Model.RequestId</dd>
+
+                    <dt class="col-sm-4">Patient</dt>
+                    <dd class="col-sm-8">@Model.PatientName</dd>
+
+                    <dt class="col-sm-4">Blood Group</dt>
+                    <dd class="col-sm-8">@Model.BloodGroup</dd>
+
+                    <dt class="col-sm-4">Quantity</dt>
+                    <dd class="col-sm-8">@Model.Quantity ml</dd>
+
+                    <dt class="col-sm-4">Status</dt>
+                    <dd class="col-sm-8">@Model.Status</dd>
+                </dl>
+            </div>
+
+            <!-- Form -->
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="RequestId" />
+
+                <button type="submit" class="btn btn-danger px-4">
+                    Yes, Delete Request
+                </button>
+
+                <a asp-action="Index" class="btn btn-dark ms-2 px-4">Cancel</a>
+            </form>
+
+        </div>
+    </div>
+</div>

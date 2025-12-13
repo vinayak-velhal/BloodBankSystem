@@ -1,0 +1,56 @@
+﻿@model BloodBankManagementSystem.Models.DonorRecord
+
+@{
+    ViewData["Title"] = "Delete Donor";
+}
+
+<div class="delete-wrapper container mt-5">
+    <div class="delete-card shadow-lg border-0 rounded-4 overflow-hidden">
+
+        <!-- HEADER -->
+        <div class="delete-header text-white py-3 px-4">
+            <h3 class="mb-0">Delete Donor Record</h3>
+        </div>
+
+        <!-- BODY -->
+        <div class="delete-body p-4">
+
+            <!-- Warning Box -->
+            <div class="warning-box mb-4">
+                ⚠️ Are you sure you want to permanently delete this donor?
+            </div>
+
+            <!-- Details -->
+            <div class="details-section p-3 rounded-3 mb-4">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Donor Name</dt>
+                    <dd class="col-sm-8">@Model.FullName</dd>
+
+                    <dt class="col-sm-4">Mobile Number</dt>
+                    <dd class="col-sm-8">@Model.MobileNumber</dd>
+
+                    <dt class="col-sm-4">Blood Group</dt>
+                    <dd class="col-sm-8">@Model.BloodGroup</dd>
+
+                    <dt class="col-sm-4">Donation Date</dt>
+                    <dd class="col-sm-8">@Model.DonationDate.ToString("yyyy-MM-dd")</dd>
+                </dl>
+            </div>
+
+            <!-- Buttons -->
+            <form asp-action="Delete" method="post" class="text-center mt-3">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+
+                <button type="submit" class="btn btn-danger px-4 me-2 shadow-sm rounded-pill fw-bold">
+                    <i class="bi bi-trash3-fill me-2"></i> Confirm Delete
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary px-4 shadow-sm rounded-pill">
+                    <i class="bi bi-arrow-left-circle me-2"></i> Cancel
+                </a>
+            </form>
+
+        </div>
+    </div>
+</div>

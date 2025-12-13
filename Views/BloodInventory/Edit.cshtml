@@ -1,0 +1,97 @@
+﻿@model BloodBankManagementSystem.Models.BloodInventory
+@{
+    ViewData["Title"] = "Edit Blood Inventory";
+}
+
+<div class="container py-4">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger fw-bold" })
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center border-bottom">
+            <h4 class="mb-0 fw-semibold text-danger">
+                <i class="bi bi-droplet-half"></i> Edit Blood Inventory
+            </h4>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left-circle"></i> Back to List
+            </a>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Edit" method="post" class="row g-3">
+                <input type="hidden" asp-for="InventoryId" />
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Donor Name</label>
+                    <input type="text" value="@Model.Donor?.FullName" class="form-control shadow-sm" readonly />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="BloodGroup" class="form-label fw-semibold"></label>
+                    <input asp-for="BloodGroup" class="form-control shadow-sm" readonly />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="CollectionDate" class="form-label fw-semibold"></label>
+                    <input asp-for="CollectionDate" class="form-control shadow-sm" readonly />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="ExpiryDate" class="form-label fw-semibold"></label>
+                    <input asp-for="ExpiryDate" class="form-control shadow-sm" readonly />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Quantity" class="form-label fw-semibold"></label>
+                    <input asp-for="Quantity" id="quantityInput" class="form-control shadow-sm border-primary" min="0" required />
+                    <span asp-validation-for="Quantity" class="text-danger small"></span>                
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Status" class="form-label fw-semibold"></label>
+                    <select asp-for="Status" class="form-select shadow-sm" readonly disabled>
+                        <option value="Available">Available</option>
+                        <option value="Issued">Issued</option>
+                        <option value="Expired">Expired</option>
+                    </select>
+                </div>
+
+                <div class="col-12 d-flex gap-2 mt-3">
+                    <button type="submit" class="btn btn-success shadow-sm">
+                        <i class="bi bi-save2"></i> Save Changes
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary shadow-sm">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const qtyInput = document.getElementById("quantityInput");
+            const statusSelect = document.querySelector("[name='Status']");
+
+            qtyInput.addEventListener("input", function () {
+                const quantity = parseInt(this.value || 0);
+
+                // Prevent negative quantity
+                if (quantity < 0) {
+                    alert("Quantity cannot be negative!");
+                    this.value = 0;
+                }
+
+                // Update status dynamically
+                if (quantity === 0) {
+                    statusSelect.value = "Issued";
+                } else if (statusSelect.value === "Issued") {
+                    statusSelect.value = "Available";
+                }
+            });
+        });
+    </script>
+}

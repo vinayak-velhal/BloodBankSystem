@@ -1,0 +1,127 @@
+﻿@model BloodBankManagementSystem.Models.BloodRequest
+@{
+    ViewData["Title"] = "Edit Blood Request / Issue";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-11">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center py-3 rounded-top-4">
+                    <h4 class="mb-0 fw-semibold"><i class="bi bi-droplet-half me-2"></i>Edit Blood Request / Issue</h4>
+                    <a asp-action="Index" class="btn btn-outline-light btn-sm">
+                        <i class="bi bi-arrow-left-circle me-1"></i> Back to List
+                    </a>
+                </div>
+
+               <div class="card-body px-5 py-4">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger fw-bold mb-3" })
+
+                    <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+                        <input type="hidden" asp-for="RequestId" />
+                        <input type="hidden" asp-for="PatientId" />
+                        <input type="hidden" asp-for="PatientName" />
+                        <input type="hidden" asp-for="BloodGroup" />
+                        <input type="hidden" asp-for="HospitalName" />
+                        <input type="hidden" asp-for="RequestDate" />
+                        <input type="hidden" asp-for="Status" />
+                        <input type="hidden" asp-for="Remarks" />
+                    
+                        <div class="row g-4">
+            
+                            <div class="col-md-6">
+                               <label class="form-label fw-semibold">Patient Name</label>
+                               <input class="form-control shadow-sm" value="@Model.PatientName" readonly />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Blood Group</label>
+                                <input class="form-control shadow-sm text-danger" value="@Model.BloodGroup" readonly />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Request Date</label>
+                                <input class="form-control shadow-sm" value="@Model.RequestDate.ToString("yyyy-MM-dd HH:mm")" readonly />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Quantity" class="form-label fw-semibold"></label>
+                                <input asp-for="Quantity" class="form-control shadow-sm" />
+                                <span asp-validation-for="Quantity" class="text-danger small"></span>
+                            </div>
+    
+                            <div class="col-md-6">
+                                <label asp-for="InventoryId" class="form-label fw-semibold">Select Inventory (Optional)</label>
+                                <select asp-for="InventoryId" id="InventoryId" class="form-select shadow-sm" asp-items="@(new SelectList(ViewBag.InventoryList, "InventoryId", "Display", Model.InventoryId))">
+                                    <option value="">-- Select Blood Unit (if Issued) --</option>
+                                </select>
+                            </div>
+        
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Current Status</label>
+                                @{
+                                    var badgeClass = Model.Status switch
+                                    {
+                                        "Pending" => "bg-warning text-dark",
+                                        "Issued" => "bg-success",
+                                        "Rejected" => "bg-danger",
+                                        _ => "bg-secondary"
+                                    };
+                                }
+                                <div class="form-control-plaintext">
+                                    <span class="badge @badgeClass px-3 py-2">@Model.Status</span>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Remark History</label>
+                                <textarea class="form-control shadow-sm" rows="5" readonly>@Model.Remarks</textarea>
+                                <small class="text-muted">Above remarks are locked and show all activity history.</small>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Add New Remark</label>
+                                <textarea name="NewRemark" class="form-control shadow-sm" rows="3" placeholder="Type any additional remark (optional)"></textarea>
+                            </div>
+
+                
+                            <div class="col-12 d-flex justify-content-between flex-wrap gap-2 mt-3">
+                                <div>
+                                    <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                                        <i class="bi bi-x-circle me-1"></i> Cancel
+                                    </a>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-info shadow-sm px-4" data-bs-toggle="modal" data-bs-target="#inventoryModal">
+                                        <i class="bi bi-droplet-half"></i> View Inventory
+                                    </button>
+                                    <button type="submit" class="btn btn-success px-4 shadow-sm">
+                                        <i class="bi bi-save2-fill me-1"></i> Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+               </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- INVENTORY MODAL -->
+<div class="modal fade" id="inventoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content rounded-3 shadow">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title"><i class="bi bi-boxes me-2"></i>Available Blood Inventory</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <iframe src="/BloodInventory/Index?flow=request" style="width:100%;height:600px;border:none;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

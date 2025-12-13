@@ -1,0 +1,105 @@
+﻿@model BloodBankManagementSystem.Models.BloodInventory
+@{
+    ViewData["Title"] = "Add Blood Unit";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-danger text-white text-center py-3 rounded-top-4">
+                    <h4 class="mb-0"><i class="bi bi-droplet-half me-2"></i>Add Blood Unit</h4>
+                </div>
+
+                <div class="card-body px-5 py-4 bg-light">
+                    <form asp-action="Create" method="post" class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3 small"></div>
+
+                        <!-- Donor Dropdown -->
+                        <div class="mb-3">
+                            <label asp-for="DonorId" class="form-label fw-semibold">Select Donor</label>
+                            <select asp-for="DonorId" class="form-select shadow-sm" asp-items="ViewBag.Donors">
+                                <option value="">-- Select Donor --</option>
+                            </select>
+                            <span asp-validation-for="DonorId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="BloodGroup" class="form-label fw-semibold">Blood Group</label>
+                                <input asp-for="BloodGroup" class="form-control shadow-sm" id="bloodGroup" readonly />
+                                <span asp-validation-for="BloodGroup" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Quantity" class="form-label fw-semibold">Quantity (ml)</label>
+                                <input asp-for="Quantity" class="form-control shadow-sm" id="quantity" readonly />
+                                <span asp-validation-for="Quantity" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CollectionDate" class="form-label fw-semibold">Collection Date</label>
+                                <input asp-for="CollectionDate" type="date" class="form-control shadow-sm" readonly />
+                                <span asp-validation-for="CollectionDate" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ExpiryDate" class="form-label fw-semibold">Expiry Date</label>
+                                <input asp-for="ExpiryDate" type="date" class="form-control shadow-sm" />
+                                <span asp-validation-for="ExpiryDate" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Status" class="form-label fw-semibold">Status</label>
+                            <input asp-for="Status" class="form-control shadow-sm" value="Available" readonly />
+                            <span asp-validation-for="Status" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-arrow-left-circle me-1"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-danger px-4 shadow-sm">
+                                <i class="bi bi-save2-fill me-1"></i> Save Blood Unit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Optional Bootstrap Icons CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+@section Scripts 
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.getElementById("DonorId").addEventListener("change", function () {
+            var donorId=this.value;
+            if(donorId){
+                fetch(`/BloodInventory/GetDonorBloodGroup/${donorId}`)
+                .then(response=>response.json())
+                .then(data=>{
+                    document.getElementById("bloodGroup").value=data.bloodGroup || "";
+                    document.getElementById("quantity").value = data.quantity || "";
+                })                                                   
+                .catch(err=>console.error(err));
+            }
+            else
+            {
+                document.getElementById("bloodGroup").value="";
+                document.getElementById("quantity").value = "";
+            }
+        });
+    </script>
+}

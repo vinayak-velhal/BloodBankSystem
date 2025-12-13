@@ -1,0 +1,95 @@
+﻿@model BloodBankManagementSystem.Models.Consent
+@{
+    ViewData["Title"] = "Consent Verification Details";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <!-- Header -->
+                <div class="card-header bg-gradient bg-primary text-white text-center py-3">
+                    <h4 class="fw-bold mb-0">
+                        <i class="bi bi-shield-check me-2"></i> Consent Verification Details
+                    </h4>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body bg-light px-5 py-4">
+                    <table class="table table-borderless align-middle">
+                        <tbody>
+                            <tr>
+                                <th class="text-secondary fw-semibold w-25">Consent ID</th>
+                                <td>@Model.Id</td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary fw-semibold">Donor Name</th>
+                                <td>@ViewBag.DonorName</td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary fw-semibold">Consent Text</th>
+                                <td class="text-wrap">@Model.ConsentGiven</td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary fw-semibold">Signed By</th>
+                                <td class="fw-semibold text-primary">@Model.SignedBy</td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary fw-semibold">Verification Status</th>
+                                <td>
+                                    @if (Model.IsVerified)
+                                    {
+                                        <span class="badge bg-success px-3 py-2"><i class="bi bi-check-circle me-1"></i> Verified</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger px-3 py-2"><i class="bi bi-x-circle me-1"></i> Not Verified</span>
+                                        <a asp-action="Create" asp-route-donorId="@Model.DonorId" class="btn btn-sm btn-primary ms-3 shadow-sm">
+                                            <i class="bi bi-person-check"></i> Verify Now
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary fw-semibold">Signature Hash</th>
+                                <td><code>@Model.SignatureHash</code></td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary fw-semibold">Created At</th>
+                                <td>@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer text-center bg-white py-3">
+                    <a asp-action="Index" asp-controller="Donor" class="btn btn-outline-secondary px-4 me-2 shadow-sm">
+                        <i class="bi bi-arrow-left-circle me-1"></i> Back to Donor List
+                    </a>
+
+                    <button type="button" class="btn btn-info text-white px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#inventoryModal">
+                        <i class="bi bi-droplet-half me-1"></i> View Blood Inventory
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="inventoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-lg">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-semibold"><i class="bi bi-archive me-2"></i>Available Blood Inventory</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <iframe src="/BloodInventory/Index?flow=donor" style="width:100%;height:600px;border:none;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+

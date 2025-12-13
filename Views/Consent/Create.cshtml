@@ -1,0 +1,70 @@
+﻿ @model BloodBankManagementSystem.Models.Consent
+
+@{
+    ViewBag.Title = "Consent Form";
+}
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center py-3 rounded-top-4">
+                    <h4 class="mb-0">
+                        <i class="bi bi-shield-lock-fill me-2"></i> Donor Consent Verification
+                    </h4>
+                </div>
+
+                <div class="card-body px-5 py-4 bg-light">
+                    <form asp-action="Create" method="post" class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="DonorId" />
+                        <div class="mb-4">
+                            <label asp-for="ConsentGiven" class="form-label fw-bold text-secondary">
+                                Consent Declaration
+                            </label>
+                            <textarea asp-for="ConsentGiven" class="form-control shadow-sm" rows="4" placeholder="Enter your consent text here..."></textarea>
+                            <span asp-validation-for="ConsentGiven" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="SignedBy" class="form-label fw-bold text-secondary">
+                                Signed By (Email or Mobile)
+                            </label>
+                            <input asp-for="SignedBy" class="form-control shadow-sm" placeholder="Enter a valid email" />
+                            <span asp-validation-for="SignedBy" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" asp-controller="Donor" class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-arrow-left-circle me-1"></i> Back to Donors
+                            </a>
+                            <button type="submit" class="btn btn-success px-4 shadow-sm">
+                                <i class="bi bi-send-check-fill me-1"></i> Send OTP
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-center text-muted small bg-white rounded-bottom-4 py-2">
+                    <i class="bi bi-info-circle me-1 text-primary"></i> An OTP will be sent to your provided email for consent verification.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+
+
+
+
+
+
+

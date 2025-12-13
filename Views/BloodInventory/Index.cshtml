@@ -1,0 +1,149 @@
+﻿@model IEnumerable<BloodBankManagementSystem.Models.BloodInventory>
+
+@{
+    ViewData["Title"] = "Blood Inventory";
+    string currentSort = Context.Request.Query["sortOrder"];
+    string currentSearch = Context.Request.Query["searchBloodGroup"];
+}
+
+<!-- Bootstrap Icons (if not already included in _Layout.cshtml) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="container mt-3 mb-5">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold text-danger">
+            <i class="bi bi-droplet-half me-2"></i> Blood Inventory Management
+        </h2>
+        @if (ViewBag.Flow == "donor")
+        {
+            <a asp-action="Create" class="btn btn-success shadow-sm">
+                <i class="bi bi-plus-circle me-1"></i> Add New Inventory
+        </a>
+        }
+    </div>  
+
+    <!-- Inventory Table Card -->
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-danger bg-gradient text-white py-3 rounded-top-4">
+            <h5 class="mb-0">
+                <i class="bi bi-clipboard2-pulse me-2"></i> Blood Inventory List
+            </h5>
+        </div>
+
+        <div class="card-body p-4">
+            <form method="get" asp-action="Index" class="row g-3 justify-content-center mb-4">
+                <div class="col-md-5">
+                    <input type="text" name="searchBloodGroup" value="@currentSearch" class="form-control shadow-sm" placeholder="Search Blood Group (e.g. A+, B-, O+)" />
+                </div>
+                <div class="col-md-2 text-center">
+                    <button type="submit" class="btn btn-danger w-100 shadow-sm">
+                        <i class="bi bi-search me-1"></i> Search
+                    </button>
+                </div>
+                <div class="col-md-2 text-center">
+                    <a asp-action="Index" class="btn btn-secondary w-100 shadow-sm">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Reset
+                    </a>
+                </div>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle text-center">
+                    <thead class="table-light border-bottom">
+                        <tr>
+                            <th>Blood Group</th>
+                            <th>Quantity (ml)</th>
+                            <th>Collection Date</th>
+                            <th style="width: 160px;">
+                                Expiry Date
+                                <a asp-action="Index" asp-route-searchBloodGroup="@currentSearch" asp-route-sortOrder="expiryAsc" class="text-dark ms-2" title="Sort Earliest First">
+                                    <i class="bi bi-arrow-down"></i>
+                                </a>
+                                <a asp-action="Index" asp-route-searchBloodGroup="@currentSearch" asp-route-sortOrder="expiryDesc" class="text-dark ms-1" title="Sort Latest First">
+                                    <i class="bi bi-arrow-up"></i>
+                                </a>
+                            </th>
+                            <th>Status</th>
+                            <th>Donor Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td><span class="fw-semibold text-danger">@item.BloodGroup</span></td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.CollectionDate.ToString("yyyy-MM-dd")</td>
+                                    <td>@item.ExpiryDate.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        <span class="badge
+                                            @(item.Status == "Available" ? "bg-success text-light" :
+                                              item.Status == "Expired" ? "bg-danger text-light" :
+                                              "bg-warning text-light")">
+                                            @item.Status
+                                        </span>
+                                    </td>
+                                    <td style="min-width: 300px;">
+                                        @if (item.Donor != null)
+                                        {
+                                            <span class="fw-semibold text-primary">@item.Donor.FullName</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">No Donor Linked</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            @if (ViewBag.Flow == "request")
+                                            {
+                                                <a asp-action="Edit" asp-route-id="@item.InventoryId" class="btn btn-sm btn-warning text-dark shadow-sm me-1" title="Edit Record">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                            }
+                                            <a asp-action="Details" asp-route-id="@item.InventoryId" class="btn btn-sm btn-info text-white shadow-sm me-1" title="View Details">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.InventoryId" class="btn btn-sm btn-danger shadow-sm" title="Delete Record">
+                                                <i class="bi bi-trash3-fill"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    <i class="bi bi-exclamation-circle me-2"></i> No records found.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Hover/Shadow Enhancement -->
+<style>
+    .table-hover tbody tr:hover {
+        background-color: #fff5f5;
+        transition: background-color 0.3s ease;
+    }
+
+    .card {
+        transition: box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.08);
+        }
+</style>

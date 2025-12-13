@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\images\**" />
+    <Compile Remove="wwwroot\NewFolder1\**" />
+    <Content Remove="wwwroot\images\**" />
+    <Content Remove="wwwroot\NewFolder1\**" />
+    <EmbeddedResource Remove="wwwroot\images\**" />
+    <EmbeddedResource Remove="wwwroot\NewFolder1\**" />
+    <None Remove="wwwroot\images\**" />
+    <None Remove="wwwroot\NewFolder1\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Account\_AuthLayout.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="bootstrap" Version="5.3.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGenerators.Mvc" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Home\" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
+  <ItemGroup>
+    <None Include="Views\Shared\_AuthLayout.cshtml" />
+    <None Include="wwwroot\images\DoctorInformation.jpg" />
+    <None Include="wwwroot\images\Donor Registration.jpg" />
+    <None Include="wwwroot\images\emp.jpg" />
+    <None Include="wwwroot\images\HomePage.jpg" />
+    <None Include="wwwroot\images\images (3)_1517570636322.jpg" />
+    <None Include="wwwroot\images\images (3)_1517570636322.png" />
+    <None Include="wwwroot\images\images (31)_1517570462290.jpg" />
+    <None Include="wwwroot\images\IMG-20180202-WA0018.jpg" />
+    <None Include="wwwroot\images\IMG-20180202-WA0019.jpg" />
+    <None Include="wwwroot\images\IMG-20180202-WA0020.jpg" />
+    <None Include="wwwroot\images\IMG-20180202-WA0021.jpg" />
+    <None Include="wwwroot\images\IMG-20180202-WA0022.jpg" />
+    <None Include="wwwroot\images\IMG-20180202-WA0023.jpg" />
+    <None Include="wwwroot\images\Patient.png" />
+    <None Include="wwwroot\images\Patient25.png" />
+    <None Include="wwwroot\images\Replacement Domor2.png" />
+    <None Include="wwwroot\images\Replacement Donor.png" />
+    <None Include="wwwroot\images\Stock Record.jpg" />
+    <None Include="wwwroot\images\unnamed (1)_1517570426552.png" />
+    <None Include="wwwroot\images\Women's_health_icon.svg_1517570061922.png" />
+  </ItemGroup>
+
+</Project>

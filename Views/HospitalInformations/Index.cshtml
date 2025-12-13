@@ -1,0 +1,101 @@
+﻿@model IEnumerable<BloodBankManagementSystem.Models.HospitalInformation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+    <div class="container my-5">
+
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-primary">
+                    <i class="bi bi-hospital me-2"></i>Hospital Management
+                </h2>
+                <a asp-action="Create" class="btn btn-primary shadow-sm">
+                    <i class="bi bi-plus-circle me-1"></i> Add New Hospital
+                </a>
+        </div>
+
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-header bg-gradient bg-primary text-white py-3 rounded-top-4">
+                <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i>Hospital Information</h5>
+            </div>
+
+            <div class="card-body p-4">
+            <form method="get" asp-action="Index" class="row g-3 justify-content-center mb-4">
+                <div class="col-md-5">
+                    <input type="text" name="searchText" value="@ViewBag.SearchText" class="form-control shadow-sm" placeholder="Search Hospital Name" />
+                </div>
+                <div class="col-md-2 text-center">
+                    <button type="submit" class="btn btn-primary w-100 shadow-sm">
+                        <i class="bi bi-search me-1"></i> Search
+                    </button>
+                </div>
+                <div class="col-md-2 text-center">
+                    <a asp-action="Index" class="btn btn-secondary w-100 shadow-sm">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Reset
+                    </a>
+                </div>
+            </form>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">    
+                        <thead class="table-light border-bottom">
+                            <tr class="text-center">
+                                <th>Hospital Name</th>
+                                <th>Hospital Address</th>
+                                <th>Doctor Name</th>
+                                <th>Hospital Contact</th>
+                                <th>Person Contact</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="text-center">
+                                    <td>@item.HospitalName</td>
+                                    <td>@item.HospitalAddress</td>
+                                    <td>@item.DoctorName</td>
+                                    <td>@item.HospitalContact</td>
+                                    <td>@item.PersonContact</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                        <a asp-action="Edit" asp-route-id="@item.HospitalId" class="btn btn-sm btn-warning text-white px-3" title="Edit Record">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                        <a asp-action="Details" asp-route-id="@item.HospitalId" class="btn btn-sm btn-info text-white px-3" title="View Details">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.HospitalId" class="btn btn-sm btn-danger px-3" title="Delete Record">
+                                                <i class="bi bi-trash3-fill"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

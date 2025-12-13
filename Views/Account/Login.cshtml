@@ -1,0 +1,58 @@
+﻿@model BloodBankManagementSystem.Models.User
+@{
+    Layout = "_AuthLayout";
+}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+<div class="auth-bg">
+
+    <div class="auth-heading">
+        <h1 class="m-0"><big>Blood Bank System</big></h1>
+        <p><small>&copy; Vinayak Velhal</small></p>
+    </div>
+
+    <div class="auth-card">
+        <h2 class="auth-title">Login</h2>
+            @if (@TempData["ErrorMessage"] !=null)
+            {
+                <div class="d-flex justify-content-center">
+                    <div class="alert alert-danger text-center mb-2 p-1 w-75">@TempData["ErrorMessage"]</div>
+                </div>
+            }
+            
+
+        <form asp-action="Login" method="post">
+
+            <div class="mb-3">
+                <label class="auth-label fw-semibold">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="Enter a valid email" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="auth-label fw-semibold">Password</label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="Enter password" />
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success auth-btn w-100 py-2 rounded-pill">Login</button>
+
+            <p class="text-center mt-3">
+                <small>
+                    Don't have an account?
+                    <a asp-action="Register" class="text-decoration-none text-success fw-semibold">Register</a>
+                </small>
+            </p>
+
+        </form>
+    </div>
+
+</div>
+
+
+

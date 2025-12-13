@@ -1,0 +1,263 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+}
+
+/*Logo Drop Icon*/
+#dropIcon {
+    color: red;
+}
+
+@media (min-width: 768px) {
+    html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f6f9ff;
+    transition: background-color 0.3s ease;
+}
+
+.card {
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/*Bill Design*/
+
+.bill-container {
+    position: relative;
+    max-width: 550px;
+    margin: 30px auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 40px;
+    padding-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+    .bill-container::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 300px;
+        background: url('/images/Bill_Background_Image.jpg') no-repeat center center;
+        background-size: contain;
+        opacity: 0.1;
+        transform: translate(-50%,-50%);
+        z-index: 0;
+    }
+.bill-content{
+    position: relative;
+    z-index: 2;
+}
+.bill-header{
+    text-align: center;
+}
+
+.bill-header h2{
+    margin: 0;
+    color: #DC3545;
+    font-size: 26px;
+    font-weight: 700;
+}
+.bill-details{
+    margin-bottom: 0px;
+    line-height: 1.8;
+    color: #222;
+    font-size: 15px;
+}
+.bill-details strong {
+    color: #b30000;
+}
+.payment-info{
+    border-top: 1px dashed #ccc;
+    padding-top: 15px;
+    font-size: 15px;
+}
+.signature{
+    text-align: right;
+}
+.bill-footer{
+    text-align: center;
+    margin-top: 15px;
+    font-size: 13px;
+    color: #666;
+}
+/*  BLOOD REQUEST DELETE PAGE STYLES */
+
+.delete-card-header {
+    background: linear-gradient(90deg, #7f1d1d, #dc2626);
+    color: #fff;
+    padding: 16px 24px;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.delete-warning-box {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #7f1d1d;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.delete-preview-box {
+    background: #f9fafb;
+    border-left: 4px solid #dc2626;
+    border-radius: 8px;
+    padding: 15px 20px;
+}
+
+    .delete-preview-box dl dt {
+        color: #444;
+        font-weight: 600;
+    }
+
+    .delete-preview-box dl dd {
+        color: #333;
+        margin-bottom: 8px;
+    }
+/* Delete Page Unified Styling (Blood Request + Inventory+Bill) */
+
+.delete-header {
+    background: linear-gradient(90deg, #7f1d1d, #dc2626);
+}
+
+.warning-box {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #7f1d1d;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.details-section {
+    background: #f9fafb;
+    border-left: 4px solid #dc2626;
+}
+
+    .details-section dt {
+        font-weight: 600;
+        color: #444;
+    }
+
+    .details-section dd {
+        color: #222;
+    }
+
+/* AUTH PAGES SHARED STYLING */
+
+.auth-bg {
+    height: 100vh;
+    background: url('/images/Login Background Image.jpg') no-repeat center center;
+    display: flex;
+    justify-content: space-between; /* RIGHT SIDE CARD */
+    align-items: center;
+    padding-right: 80px;
+}
+
+.auth-heading {
+    color: white;
+    text-align: center;
+    margin-top: 350px;
+    margin-left: 170px;
+    letter-spacing: 1px;
+}
+.auth-heading h1 {
+    font-family: "Merriweather", serif;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+.auth-heading p {
+    opacity: 0.9;
+}
+
+.auth-card {
+    width: 370px;
+    padding: 35px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.auth-title {
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.auth-label {
+    font-weight: 500;
+}
+
+.auth-btn {
+    width: 100%;
+    font-size: 17px;
+    padding: 10px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/*Donor Bill Design*/
+
+#DonorBill {
+    max-width: 450px;
+    margin: 0 auto;
+    border: 2px dashed #b91c1c;
+}
+
+#DonorVerification {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#forOpacity, #checkImg, #pendingImg {
+    opacity: 0.6;
+}
+
+.verify {
+    font-size: 12px;
+}
+
+
+
+
+
+
+

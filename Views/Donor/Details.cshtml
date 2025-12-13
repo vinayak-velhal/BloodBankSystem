@@ -1,0 +1,136 @@
+﻿@model BloodBankManagementSystem.Models.DonorRecord
+@{
+    var consent = ViewBag.Consent as BloodBankManagementSystem.Models.Consent;
+    ViewData["Title"] = "Donation Receipt";
+}
+
+<div class="container my-5">
+    <div id="DonorBill" class="receipt shadow-lg px-4 py-4 rounded-3 bg-white border">
+
+        <!-- Header -->
+        <div class="text-center mb-3">
+            <h3 class="fw-bold text-danger mb-0">Blood Donation Receipt</h3>
+            <small class="text-secondary m-0">Thank you for your valuable contribution!</small>
+        </div>
+
+        <hr />
+
+        <!-- Donor Info -->
+        <h5 class="fw-bold text-primary mb-2">Donor Information:</h5>
+            <p><strong>Name:</strong> @Model.FullName</p>
+            <p><strong>Blood Group:</strong> <span class="badge bg-danger">@Model.BloodGroup</span></p>
+            <p><strong>Donation Date:</strong> @Model.DonationDate.ToString("dd/MM/yyyy")</p>
+            <p><strong>Mobile:</strong> @Model.MobileNumber</p>
+
+        @if (Model.DonationType == "Replacement")
+        {
+            <p><strong>Replacement For:</strong> @Model.PatientRecord?.PatientName</p>
+        }
+
+        <hr />
+
+        <!-- Consent Section -->
+
+        @if (consent != null)
+        {
+            @if (consent.IsVerified)
+            {   
+                @* Verification Successful *@
+                <div id="DonorVerification">
+                    <div class="p-2 border border-secondary rounded" style="position: relative; overflow:hidden">
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <img id="checkImg" src="~/images/check.png" alt="CheckImage" style="width:100%; height:100%; object-fit:cover;" />
+                        </div>
+                        <small id="forOpacity">
+                            <p class="m-0">Digitally Signed By: <br />@Model.FullName</p>
+                            <p class="verify m-0">@consent.SignatureHash</p>
+                            <p class="verify m-0">@consent.CreatedAt</p>
+                        </small>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button class="btn btn-outline-secondary" onclick="window.print()">
+                        🖨 Print Receipt
+                    </button>
+                    <a asp-action="Index" class="btn btn-danger ms-2">Back</a>
+                </div>
+            }
+            else
+            {   
+                @* OTP has been sent but Verification is not Done *@
+                <div id="DonorVerification">
+                    <div class="p-2 border border-secondary rounded" style="position: relative; overflow:hidden">
+                        <div style="width: 135px; height: 60px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <img id="pendingImg" src="~/images/Pending.png" alt="PendingImage" style="width:100%; height:100%; object-fit:contain;" />
+                        </div>
+                        <small id="forOpacity">
+                            <p class="m-0">Digitally Signed By:  <br />@Model.FullName</p>
+                            <p id="consentMsg" class="m-0 text-danger">Consent not submitted yet!</p>
+                            <a asp-controller="Consent" asp-action="Create" asp-route-donorId="@Model.Id">Submit Consent</a>
+                        </small>
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a asp-action="Index" class="btn btn-danger ms-2">Back</a>
+                </div>
+            }
+        }
+        else
+        {
+            @* OTP hasn't been sent and Verification is not Done *@
+            <div id="DonorVerification">
+                <div class="p-2 border border-secondary rounded" style="position: relative; overflow:hidden">
+                    <div style="width: 135px; height: 60px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        <img id="pendingImg" src="~/images/Pending.png" alt="PendingImage" style="width:100%; height:100%; object-fit:contain;" />
+                    </div>
+                    <small id="forOpacity">
+                        <p class="m-0">Digitally Signed By:  <br />@Model.FullName</p>
+                        <p class="m-0 text-danger" active>Consent not submitted yet!</p>
+                        <a asp-controller="Consent" asp-action="Create" asp-route-donorId="@Model.Id">Submit Consent</a>
+                    </small>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="btn btn-danger ms-2">Back</a>
+            </div>
+        }
+
+        <div class="text-center">
+            <button type="button" class="btn btn-primary btn-sm text-white px-2 mt-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#inventoryModal">
+                <i class="bi bi-droplet-half me-1"></i> View Blood Inventory
+            </button>
+        </div>
+        <hr class="mb-0"/>
+
+    </div>
+</div>
+
+<div class="modal fade" id="inventoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-lg">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-semibold"><i class="bi bi-archive me-2"></i>Available Blood Inventory</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <iframe src="/BloodInventory/Index?flow=donor" style="width:100%;height:600px;border:none;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@@media print {
+    .btn, nav, header {
+        display: none !important;
+    }
+    .receipt {
+        border: none;
+        width: 100%;
+    }
+}
+</style>
+

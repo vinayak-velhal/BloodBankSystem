@@ -1,0 +1,83 @@
+﻿@model BloodBankManagementSystem.Models.BloodInventory
+@{
+    ViewData["Title"] = "Blood Inventory Details";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <!-- Header -->
+                <div class="card-header bg-danger text-white text-center py-3 rounded-top-4">
+                    <h4 class="mb-0">
+                        <i class="bi bi-droplet-fill me-2"></i>Blood Inventory Details
+                    </h4>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body px-5 py-4">
+                    <table class="table table-borderless align-middle mb-0">
+                        <tbody>
+                            <tr>
+                                <th class="text-secondary fw-semibold w-25">Inventory ID</th>
+                                <td>@Model.InventoryId</td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary fw-semibold">Blood Group</th>
+                                <td class="fw-bold text-danger">@Model.BloodGroup</td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary fw-semibold">Quantity (ml)</th>
+                                <td>@Model.Quantity</td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary fw-semibold">Collection Date</th>
+                                <td>@Model.CollectionDate.ToString("yyyy-MM-dd")</td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary fw-semibold">Expiry Date</th>
+                                <td>@Model.ExpiryDate.ToString("yyyy-MM-dd")</td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary fw-semibold">Status</th>
+                                <td>
+                                    <span class="badge
+                                        @(Model.Status == "Available" ? "bg-success text-dark" :
+                                          Model.Status == "Expired" ? "bg-danger text-dark" :
+                                          "bg-warning text-dark") px-3 py-2">
+                                        @Model.Status
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-secondary fw-semibold">Donor Name</th>
+                                <td>
+                                    @if (Model.Donor != null)
+                                    {
+                                        <span class="fw-semibold text-primary">@Model.Donor.FullName</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted fst-italic">No donor linked</span>
+                                    }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer bg-light text-end rounded-bottom-4 py-3 px-4">
+                    <a asp-action="Edit" asp-route-id="@Model.InventoryId" class="btn btn-warning text-dark me-2 shadow-sm">
+                        <i class="bi bi-pencil-square me-1"></i> Edit
+                    </a>
+                    <a asp-action="Index" class="btn btn-outline-secondary shadow-sm">
+                        <i class="bi bi-arrow-left-circle me-1"></i> Back to List
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

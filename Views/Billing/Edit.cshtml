@@ -1,0 +1,86 @@
+﻿@model BloodBankManagementSystem.Models.Billing
+@{
+    ViewData["Title"] = "Edit Bill";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+          <div class="col-lg-8 col-md-10">                
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-header bg-warning text-dark text-center py-3 rounded-top-4">
+                        <h4 class="mb-0">
+                            <i class="bi bi-pencil-square me-2"></i>Edit Billing Record
+                        </h4>
+                    </div>
+
+                    <div class="card-body px-5 py-4 bg-light">
+                        <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" asp-for="BillId" />
+                            <input type="hidden" asp-for="RequestId" />
+                            <input type="hidden" asp-for="PatientName" />
+                            
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3 small"></div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PatientName" class="form-label fw-semibold">Patient Name</label>
+                                <input type="text" class="form-control shadow-sm bg-light" value="@ViewBag.PatientName" readonly />
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="HospitalName" class="form-label fw-semibold">Hospital Name</label>
+                                    <input asp-for="HospitalName" class="form-control shadow-sm bg-light" readonly />
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="BloodGroup" class="form-label fw-semibold">Blood Group</label>
+                                    <input asp-for="BloodGroup" class="form-control shadow-sm bg-light" readonly />
+                                </div>
+
+                                <div class="col-md-3 mb-3">
+                                <label asp-for="Quantity" class="form-label fw-semibold">Quantity (in ml)</label>
+                                    <input asp-for="Quantity" class="form-control shadow-sm bg-light" readonly />
+                                </div>
+
+                                <div class="col-md-3 mb-3">
+                                    <label asp-for="RatePerMl" class="form-label fw-semibold"></label>
+                                    <input asp-for="RatePerMl" class="form-control shadow-sm bg-light" placeholder="Enter rate per ml" />
+                                    <span asp-validation-for="RatePerMl" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="PaymentMode" class="form-label fw-semibold"></label>
+                                    <select asp-for="PaymentMode" class="form-select shadow-sm">
+                                        <option value="">-- Select Mode --</option>
+                                        <option>Cash</option>
+                                        <option>UPI</option>
+                                        <option>Card</option>
+                                    </select>
+                                    <span asp-validation-for="PaymentMode" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="TransactionNo" class="form-label fw-semibold"></label>
+                                    <input asp-for="TransactionNo" class="form-control shadow-sm" placeholder="Enter transaction/receipt no" />
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-4">
+                                <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                                    <i class="bi bi-arrow-left-circle me-1"></i> Back to List
+                                </a>
+                                <button type="submit" class="btn btn-warning text-dark px-4 shadow-sm fw-semibold">
+                                    <i class="bi bi-save2-fill me-1"></i> Update Bill
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+          </div>
+    </div>
+</div>
+@section Scripts 
+{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

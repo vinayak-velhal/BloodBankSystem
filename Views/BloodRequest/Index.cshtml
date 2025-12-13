@@ -1,0 +1,194 @@
+﻿@model IEnumerable<BloodBankManagementSystem.Models.BloodRequest>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@Html.Raw(TempData["Errormsg"]);
+<div class="container mb-5">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="fw-bold text-primary">
+            <img src="~/icons/BloodRequest.png" alt="BloodRequest Icon" width="40" height="40" class="mb-1 me-1" />Blood Request/Issue
+        </h2>
+        <button type="button" class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#hospitalModal">
+            <i class="bi bi-plus-circle me-1"></i> Add New Request
+        </button>
+    </div>
+
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-gradient bg-primary text-white py-3 rounded-top-4">
+            <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i>Blood Request/Issue</h5>
+        </div>
+
+        <div class="card-body p-4">
+            <form method="get" asp-action="Index" class="row g-3 justify-content-center mb-4">
+                <div class="col-md-5">
+                    <input type="text" name="searchText" value="@ViewBag.SearchText" class="form-control shadow-sm" placeholder="Search Request" />
+                </div>
+                <div class="col-md-2 text-center">
+                    <button type="submit" class="btn btn-primary w-100 shadow-sm">
+                        <i class="bi bi-search me-1"></i> Search
+                    </button>
+                </div>
+                <div class="col-md-2 text-center">
+                    <a asp-action="Index" class="btn btn-secondary w-100 shadow-sm">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Reset
+                    </a>
+                </div>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light border-bottom">
+                        <tr class="text-center">
+                            <th style="width:auto;">Patient</th>
+                            <th>Blood Group</th>
+                            <th>Qty (ml)</th>
+                            <th>Request Date</th>
+                            <th>Status</th>
+                            <th>Selected Inventory</th>
+                            <th>Latest Remark</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="text-center" style="width:auto;">
+                                <td style="white-space: nowrap;">@item.PatientName</td>
+                                <td>@item.BloodGroup</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.RequestDate.ToString("yyyy-MM-dd")</td>
+                                <td>
+                                    @{
+                                        var badgeClass = item.Status switch
+                                        {
+                                            "Pending" => "bg-warning text-dark",
+                                            "Issued" => "bg-success",
+                                            "Rejected" => "bg-danger",
+                                            _ => "bg-secondary"
+                                        };
+                                    }
+                                    <span class="badge @badgeClass px-3 py-2 shadow-sm">@item.Status</span>
+                                </td>
+                                <td>@(item.BloodInventory?.BloodGroup ?? "-")</td>
+                                <td>
+                                    @{
+                                        // Show last line of remark for compact display
+                                        var lastRemark = item.Remarks?.Split('\n').LastOrDefault() ?? "-";
+                                     }
+                                    <span title="@item.Remarks" data-bs-toggle="tooltip">
+                                        @lastRemark
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        @if (item.Status != "Rejected")
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.RequestId" class="btn btn-sm btn-warning text-white px-3" title="Issue Blood">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                        }
+                                        <a asp-action="Details" asp-route-id="@item.RequestId" class="btn btn-sm btn-info text-white px-3" title="View Details">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.RequestId" class="btn btn-sm btn-danger px-3" title="Delete Request">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== HOSPITAL MODAL ===================== -->
+<div class="modal fade" id="hospitalModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Hospital Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+            </div>
+            <div class="modal-body p-0">
+                <iframe id="hospitalFrame" src="/HospitalInformations/Create" style="width:100%;height:540px;border:none;"> </iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===================== PATIENT MODAL ===================== -->
+<div class="modal fade" id="patientModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Patient Record</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <iframe id="patientFrame" src="/Patient/Create" style="width:100%;height:600px;border:none"> </iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        window.addEventListener("message", function (event) {
+            console.log("Message received from iframe:", event.data);
+
+            // Safety: check structure
+            if (!event.data) return;
+
+            // HOSPITAL MODAL HANDLER
+            if (event.data === "HospitalSaved" || event.data.type === "HospitalSaved") {
+                const hospitalId = event.data.hospitalId;
+                const hospitalModalEl = document.getElementById('hospitalModal');
+                const patientModalEl = document.getElementById('patientModal');
+                const hospitalModal = bootstrap.Modal.getInstance(hospitalModalEl) || new bootstrap.Modal(hospitalModalEl);
+                const patientModal = bootstrap.Modal.getInstance(patientModalEl) || new bootstrap.Modal(patientModalEl);
+                hospitalModal.hide();
+
+                setTimeout(() => {
+                    document.querySelectorAll(".modal-backdrop").forEach(b => b.remove());
+                    hospitalModalEl.classList.remove("show");
+                    hospitalModalEl.style.display = "none";
+                    const patientFrame = document.getElementById('patientFrame');
+                    patientFrame.src = `/Patient/Create?hospitalId=${hospitalId}`;
+                    patientModal.show();
+                }, 400);
+            }
+
+            // PATIENT MODAL HANDLER
+            else if (event.data === "PatientSaved" || event.data.type === "PatientSaved") {
+                const patientId = event.data.patientId;
+                console.log("Message received from iframe: PatientSaved");
+                console.log("Patient ID received:", event.data.patientId);
+
+                const patientModalEl = document.getElementById('patientModal');
+                const patientModal = bootstrap.Modal.getInstance(patientModalEl) || new bootstrap.Modal(patientModalEl);
+                patientModal.hide();
+
+                setTimeout(() => {
+                    document.querySelectorAll(".modal-backdrop").forEach(b => b.remove());
+                    patientModalEl.classList.remove("show");
+                    patientModalEl.style.display = "none";
+
+                    // ✅ Redirect with patientId
+                    if (event.data.patientId) {
+                        window.location.href = '/BloodRequest/Create?patientId=' + event.data.patientId;
+                    } else {
+                        console.error("No patientId received from iframe!");
+                    }
+                }, 400);
+            }
+        });
+    </script>
+}
+
+
+

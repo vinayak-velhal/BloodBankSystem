@@ -1,0 +1,77 @@
+﻿@model BloodBankManagementSystem.Models.PatientRecord
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-warning text-dark text-center py-3 rounded-top-4">
+                    <h4 class="mb-0 fw-semibold"><i class="bi bi-pencil-square me-2"></i>Edit Patient Information</h4>
+                </div>
+                <div class="card-body px-5 py-4">
+                    <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="PatientId" />
+                        <div class="mb-3">
+                            <label asp-for="PatientName" class="form-label fw-semibold">Patient Name</label>
+                            <input asp-for="PatientName" class="form-control shadow-sm" placeholder="Enter patient name" />
+                            <span asp-validation-for="PatientName" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="PatientAddress" class="form-label fw-semibold">Patient Address</label>
+                            <textarea asp-for="PatientAddress" class="form-control shadow-sm" rows="2" placeholder="Enter patient address"></textarea>
+                            <span asp-validation-for="PatientAddress" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="MobileNo" class="form-label fw-semibold">Mobile No</label>
+                            <input asp-for="MobileNo" class="form-control shadow-sm" placeholder="Enter mobile no" />
+                            <span asp-validation-for="MobileNo" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3 row">
+                            <div class="col-md-6">
+                                <label asp-for="DiseaseName" class="form-label fw-semibold">Disease Name</label>
+                                <input asp-for="DiseaseName" class="form-control shadow-sm" placeholder="Enter disease name" />
+                                <span asp-validation-for="DiseaseName" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="BloodGroup" class="form-label fw-semibold">Blood Group</label>
+                                <select asp-for="BloodGroup" asp-items="(SelectList)ViewBag.BloodGroups" class="form-control">
+                                    <option value="">--Select Blood Group--</option>
+                                </select>
+                                <span asp-validation-for="BloodGroup" class="text-danger small"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="HospitalName" class="form-label fw-semibold">Hospital Name</label>
+                            <input asp-for="HospitalName" class="form-control" value="@Model.HospitalInformation?.HospitalName" readonly />
+                            <input type="hidden" asp-for="HospitalName" value="@Model.HospitalInformation?.HospitalName" />
+                            <input type="hidden" asp-for="HospitalId" />
+                            <span asp-validation-for="HospitalName" class="text-danger small"></span>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-arrow-left-circle me-1"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-warning text-dark px-4 shadow-sm">
+                                <i class="bi bi-save2-fill me-1"></i> Update Patient
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

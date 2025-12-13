@@ -1,0 +1,68 @@
+﻿@model BloodBankManagementSystem.Models.User
+@{
+    ViewData["Title"] = "User Registration";
+    Layout = "_AuthLayout";
+}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+</style>
+<div class="auth-bg">
+
+    <div class="auth-heading">
+        <h1 class="m-0"><big>Blood Bank System</big></h1>
+        <p><small>&copy; Vinayak Velhal</small></p>
+    </div>
+
+    <div class="auth-card" style="width: 400px; padding: 30px 35px;">
+        <h2 class="auth-title">Create Account</h2>
+
+        <form asp-action="Register" method="post">
+
+            <div class="mb-2">
+                <label asp-for="FullName" class="auth-label"></label>
+                <input asp-for="FullName" class="form-control" placeholder="Enter full name" />
+                <span asp-validation-for="FullName" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-2">
+                <label asp-for="Email" class="auth-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="Enter email" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-2">
+                <label asp-for="MobileNumber" class="auth-label"></label>
+                <input asp-for="MobileNumber" class="form-control" maxlength="10" placeholder="Enter mobile number" />
+                <span asp-validation-for="MobileNumber" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-2">
+                <label asp-for="Password" class="auth-label"></label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="Enter password" />
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-2">
+                <label asp-for="ConfirmPassword" class="auth-label"></label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success auth-btn mt-2 rounded-pill">Register</button>
+
+            <div class="text-center mt-2">
+                <small>
+                    Already have an account?
+                    <a asp-action="Login" class="text-success fw-bold text-decoration-none">Login here</a>
+                </small>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+

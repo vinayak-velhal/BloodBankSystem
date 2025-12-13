@@ -1,0 +1,100 @@
+﻿@model BloodBankManagementSystem.Models.BloodRequest
+@{
+    ViewData["Title"] = "Blood Request Details";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-md-10">
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <!-- Header -->
+                <div class="card-header bg-danger text-white text-center py-3 rounded-top-4">
+                    <h4 class="mb-0">
+                        <i class="bi bi-droplet-fill me-2"></i>Blood Request Details
+                    </h4>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body px-5 py-4">
+
+                    <!-- Request Info -->
+                    <h5 class="text-danger fw-semibold mb-3 border-bottom pb-1">Request Information</h5>
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4 fw-semibold text-secondary">Request ID</dt>
+                        <dd class="col-sm-8">@Model.RequestId</dd>
+
+                        <dt class="col-sm-4 fw-semibold text-secondary">Request Date</dt>
+                        <dd class="col-sm-8">@Model.RequestDate.ToString("yyyy-MM-dd HH:mm")</dd>
+
+                        <dt class="col-sm-4 fw-semibold text-secondary">Status</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge
+                                @(Model.Status == "Approved" ? "bg-success" :
+                                  Model.Status == "Rejected" ? "bg-danger" :
+                                  Model.Status == "Pending" ? "bg-warning text-dark" : "bg-secondary") px-3 py-2">
+                                @Model.Status
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-4 fw-semibold text-secondary">Remarks</dt>
+                        <dd class="col-sm-8">
+                            <div class="bg-light border-start border-4 border-danger p-3 rounded-3 text-secondary shadow-sm">
+                                @if (!string.IsNullOrWhiteSpace(Model.Remarks))
+                                {
+                                    @Model.Remarks
+                                }
+                                else
+                                {
+                                    <span class="text-muted fst-italic">No remarks available</span>
+                                }
+                            </div>
+                        </dd>
+                    </dl>
+
+                    <!-- Patient Info -->
+                    <h5 class="text-danger fw-semibold mb-3 border-bottom pb-1">Patient Details</h5>
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4 fw-semibold text-secondary">Patient Name</dt>
+                        <dd class="col-sm-8 text-primary fw-semibold">@Model.PatientName</dd>
+
+                        <dt class="col-sm-4 fw-semibold text-secondary">Patient ID</dt>
+                        <dd class="col-sm-8">@Model.PatientId</dd>
+
+                        <dt class="col-sm-4 fw-semibold text-secondary">Blood Group</dt>
+                        <dd class="col-sm-8 fw-semibold text-danger">@Model.BloodGroup</dd>
+
+                        <dt class="col-sm-4 fw-semibold text-secondary">Quantity</dt>
+                        <dd class="col-sm-8">@Model.Quantity ml</dd>
+                    </dl>
+
+                    @if (Model.InventoryId != null)
+                    {
+                        <h5 class="text-danger fw-semibold mb-3 border-bottom pb-1">Linked Inventory</h5>
+                        <dl class="row mb-4">
+                            <dt class="col-sm-4 fw-semibold text-secondary">Selected Inventory</dt>
+                            <dd class="col-sm-8">@(Model.BloodInventory?.BloodGroup ?? "-")</dd>
+
+                            <dt class="col-sm-4 fw-semibold text-secondary">Issue Date</dt>
+                            <dd class="col-sm-8">@Model.IssueDate?.ToString("yyyy-MM-dd HH:mm")</dd>
+                        </dl>
+                    }
+                </div>
+
+                <!-- Footer -->
+                <div class="card-footer bg-light text-end rounded-bottom-4 py-3 px-4">
+                    @if(Model.Status != "Rejected")
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.RequestId" class="btn btn-warning text-dark me-2 shadow-sm">
+                            <i class="bi bi-pencil-square me-1"></i> Edit
+                        </a>
+                    }
+                    <a asp-action="Index" class="btn btn-outline-secondary shadow-sm">
+                        <i class="bi bi-arrow-left-circle me-1"></i> Back to List
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
