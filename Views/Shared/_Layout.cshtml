@@ -85,6 +85,21 @@
             if (footer) footer.style.display = "none";
         }
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+        document.querySelectorAll("form").forEach(form => {
+            form.setAttribute("autocomplete", "off");
+        });
+
+        document.querySelectorAll("input").forEach(input => {
+            input.setAttribute("autocomplete", "off");
+            input.setAttribute("autocorrect", "off");
+            input.setAttribute("autocapitalize", "off");
+            input.setAttribute("spellcheck", "false");
+        });
+    });
+  </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
